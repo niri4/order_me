@@ -6,8 +6,8 @@ require "order_me/version"
 Gem::Specification.new do |spec|
   spec.name          = "order_me"
   spec.version       = OrderMe::VERSION
-  spec.authors       = ["nirankar-maro"]
-  spec.email         = ["nirankar@maropost.com"]
+  spec.authors       = ["niri4"]
+  spec.email         = ["nirankarsingh247@gmail.com"]
 
   spec.summary       = %q{TODO: Write a short summary, because RubyGems requires one.}
   spec.description   = %q{TODO: Write a longer description or delete this line.}
