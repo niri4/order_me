@@ -1,11 +1,5 @@
-
-require "thor"
 require "./pages_description"
-class Speak < Thor
-  include Thor::Actions
-  Speak.source_root File.expand_path('../lib/generators/order_me/templates', __FILE__)
-  Speak.new.template "layout.html.erb", "app/views/layouts/l.html.erb"
-
+class Speak
   puts("Hello, Welcome to Order Me Hold Tight For Reveolution.")
   puts("Enter Your Choices")
   puts("1. Manualy")
@@ -27,17 +21,14 @@ class Speak < Thor
       puts("1. one page")
       puts("2. two pages")
       puts("3. three pages")
-      puts("4. Browse More")
+      puts("4. Define Yourself")
       PagesDescription.new.pages_select
-
     when '2'
       puts("Your Choice is Selected as Speaking.")
-      puts( program )
+      puts( "soonly coming" )
+      exit()
     else
       input +=line
     end
   end
-
-
 end
-# Speak.start(ARGV)
