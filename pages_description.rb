@@ -69,6 +69,7 @@ class PagesDescription
         Action.new.empty_directory! page_name
       end
       puts("you Have selected #{page_count} pages,pages name is #{@@page_get}")
+      layout_choice
       exit()
     else
       puts("Please Enter the pages correctly")
@@ -76,13 +77,117 @@ class PagesDescription
     end
   end
 
-  # def layout_choice
-  #   puts("Enter Your choice about layout")
-  #   puts("1. Want Common Header And Footer")
-  #   puts("2. Header Only")
-  #   puts("3. Footer Only")
-  #   puts("4. Make Seprate Header and Footer for every Pages")
-  #   #layout_choice
-  # end
+  def layout_choice
+    puts("Enter Your choice about layout")
+    puts("1. Want Common Header And Footer")
+    puts("2. Header Only")
+    puts("3. Footer Only")
+    puts("4. Make Seprate Header and Footer for every Pages")
+    layout = ""
+    input_layout = ""
+    line_layout = ""
+    count =0
+    until line_layout.strip() == "q"
+      print("?- ")
+      line_layout  = gets()
+      case(line_layout.strip())
+      when '1'
+        if count == 0
+          common_header_footer
+          count+= 1
+          exit()
+        else
+          exit()
+        end
+      when '2'
+        if count == 0
+          header_only
+          count+= 1
+          exit()
+        else
+          exit()
+        end
+      when '3'
+        if count == 0
+          footer_only
+          count+= 1
+          exit()
+        else
+          exit()
+        end
+      when '4'
+        puts("Additional function come in future")
+        layout_choice
+      else
+        puts("Please enter your choice in these option only.")
+        layout_choice
+      end
+    end
+  end
+  def common_header_footer
+    puts("You have selected common Header and Footer")
+    puts("Given a choice to select header of your choice")
+    puts("Header list")
+    header_choice = header_list
+    if header_choice.to_i == 4
+       header = header_view_more
+    else
+      header = header_choice.to_i
+    end
+    puts("Footer list")
+    footer_choice = footer_list
+    if footer_choice.to_i == 4
+       footer = footer_view_more
+    else
+      footer = footer_choice.to_i
+    end
+  end
+  def header_only
+    header_list
+  end
+  def footer_only
+    footer_list
+  end
+  def header_list
+    puts("Enter Your Choice about Header")
+    puts("click on link to preview the header")
+    puts("1.header first #{"http://www.google.com"}")
+    puts("2.header second #{"http://www.facebook.com"}")
+    puts("3 header third #{"http://www.twitter.com"}")
+    puts("4. View More #{"http://www.youtube.com"}")
+    choice = gets()
+    if choice.to_i > 4
+      header_list
+    else
+      return choice
+    end
+  end
 
+  def header_view_more
+    puts("Enter Your key to apply that Header")
+    key = gets()
+    #TOdo need to be implemented
+    #download_header(key)
+  end
+  def footer_view_more
+    puts("Enter Your key to apply that Footer")
+    key = gets()
+    #Todo need to be implemented
+    #download_footer(key)
+  end
+
+  def footer_list
+    puts("Enter Your Choice about Header")
+    puts("click on link to preview the Footer")
+    puts("1.Footer first #{"http://www.google.com"}")
+    puts("2.Footer second #{"http://www.facebook.com"}")
+    puts("3 Footer third #{"http://www.twitter.com"}")
+    puts("4. View More #{"http://www.youtube.com"}")
+    choice = gets()
+    if choice.to_i > 4
+      footer_list
+    else
+      return choice
+    end
+  end
 end

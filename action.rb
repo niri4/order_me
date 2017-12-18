@@ -6,7 +6,9 @@ class Action < Thor
  #Speak.new.template "layout.html.erb", "app/views/layouts/l.html.erb"
   def empty_directory!(page_name)
     Action.new.empty_directory "app/views/#{file_name(page_name)}"
-    remove_file("app/views/home/home.html.erb")
+  end
+  desc "new_template!", "create the template"
+  def new_template!(location,file_name)
   end
 
   desc "new_file!", "create the file from link"
