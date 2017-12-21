@@ -1,4 +1,6 @@
 require "./action"
+require_relative "./api_call"
+require 'json'
 class PagesDescription
   def pages_select
     pages = ""
@@ -149,12 +151,16 @@ class PagesDescription
     footer_list
   end
   def header_list
+    a= ApiCall.new
+    a.list
+
+
     puts("Enter Your Choice about Header")
     puts("click on link to preview the header")
-    puts("1.header first #{"http://www.google.com"}")
-    puts("2.header second #{"http://www.facebook.com"}")
-    puts("3 header third #{"http://www.twitter.com"}")
-    puts("4. View More #{"http://www.youtube.com"}")
+    puts("1.header first #{"http://192.168.3.3:3000/templates/#{$first_link["id"]}"}")
+    puts("2.header second #{"http://192.168.3.3:3000/templates/#{$second_link["id"]}"}")
+    puts("3 header third #{"http://192.168.3.3:3000/templates/#{$third_link["id"]}"}")
+    puts("4. View More #{"http://192.168.3.3:3000/templates/"}")
     choice = gets()
     if choice.to_i > 4
       header_list
