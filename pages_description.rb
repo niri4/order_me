@@ -1,6 +1,7 @@
 require "./action"
 require_relative "./api_call"
 require 'json'
+require "./constant"
 class PagesDescription
   include ApiCall
   def pages_select
@@ -156,10 +157,10 @@ class PagesDescription
 
     puts("Enter Your Choice about Header")
     puts("click on link to preview the header")
-    puts("1.header first #{"http://192.168.3.3:3000/templates/#{a["template"].first["id"]}"}")
-    puts("2.header second #{"http://192.168.3.3:3000/templates/#{a["template"][1]["id"]}"}")
-    puts("3 header third #{"http://192.168.3.3:3000/templates/#{a["template"][2]["id"]}"}")
-    puts("4. View More #{"http://192.168.3.3:3000/templates/"}")
+    puts("1.header first #{"#{WEB_URL}templates/#{a["template"].first["id"]}"}")
+    puts("2.header second #{"#{WEB_URL}templates/#{a["template"][1]["id"]}"}")
+    puts("3 header third #{"#{WEB_URL}templates/#{a["template"][2]["id"]}"}")
+    puts("4. View More #{"#{WEB_URL}templates/"}")
     choice = gets()
     if choice.to_i > 4
       header_list
@@ -182,12 +183,13 @@ class PagesDescription
   end
 
   def footer_list
+    a= ApiCall.footer_list
     puts("Enter Your Choice about Header")
     puts("click on link to preview the Footer")
-    puts("1.Footer first #{"http://www.google.com"}")
-    puts("2.Footer second #{"http://www.facebook.com"}")
-    puts("3 Footer third #{"http://www.twitter.com"}")
-    puts("4. View More #{"http://www.youtube.com"}")
+    puts("1.Footer first #{"#{WEB_URL}templates/#{a["template"].first["id"]}"}")
+    puts("2.Footer second #{"#{WEB_URL}templates/#{a["template"][1]["id"]}"}")
+    puts("3 Footer third #{"#{WEB_URL}templates/#{a["template"][2]["id"]}"}")
+    puts("4. View More #{"#{WEB_URL}templates/"}")
     choice = gets()
     if choice.to_i > 4
       footer_list
