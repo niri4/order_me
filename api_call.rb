@@ -22,4 +22,16 @@ module ApiCall
       else
       end
     end
+
+    def self.template_search(key)
+      uri = URI("#{API_URL}template_search")
+      res = Net::HTTP.post_form(uri, 'key' => key)
+      b= JSON.parse(res.body)
+      if  b["status"] == "true"
+           return  b
+      else
+      end
+    end
+
+
 end

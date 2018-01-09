@@ -12,8 +12,8 @@ class Action < Thor
   end
 
   desc "new_file!", "create the file from link"
-  def new_file!(link,location)
-    get "http://gist.github.com/103208", "app/views/#{file_name(page_name)}/#{file_name(page_name)}.html.erb"
+  def new_file!(link,location,filename)
+    get link, "app/#{filename}/#{location}"
   end
   desc "append_file!", "put the text in file"
   def append_file!(append_location,message)
@@ -21,6 +21,11 @@ class Action < Thor
       'root: "home#index"'
     end
   end
+  desc "insert_into_file!", "put the text to insert anything in file"
+  def insert_into_file!(action,path,data,on_perform)
+      insert_into_file "app/#{path}", "<%= #{data}%>", action.to_sym => "<%= #{on_perform} %>"
+  end
+
   desc "replacement_in_file!", "replacement_in_file"
   def replacement_in_file!(replacement_location,text_remove,text_add)
     gsub_file "app/views/layouts/application.html.erb", 'root: "home#index"', '\1'

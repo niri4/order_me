@@ -129,28 +129,80 @@ class PagesDescription
     end
   end
   def common_header_footer
+    # application_layout_modify("both")
     puts("You have selected common Header and Footer")
     puts("Given a choice to select header of your choice")
     puts("Header list")
-    header_choice = header_list
-    if header_choice.to_i == 4
+    get_header(header_list)
+    puts("Footer list")
+    get_footer(footer_list)
+  end
+
+  def application_layout_modify(category)
+    # if
+  end
+
+  def get_header(header)
+    header_choice = header
+    if header_choice[0].to_i == 4
        header = header_view_more
     else
-      header = header_choice.to_i
+      header = header_choice[1]
     end
-    puts("Footer list")
-    footer_choice = footer_list
-    if footer_choice.to_i == 4
+    partial_call(header,"header")
+  end
+  def get_footer(footer)
+    footer_choice = footer
+    if footer_choice[0].to_i == 4
        footer = footer_view_more
     else
-      footer = footer_choice.to_i
+      footer = footer_choice[1]
+    end
+      partial_call(footer,"footer")
+  end
+  def partial_call(key,category)
+    template_param = api_fetch(key)
+    html_file = template_param[0]
+    css_file = template_param[1]
+    if template_param[2] !=nil
+      js_file = template_param[2]
+      partial_create(html_file,css_file,js_file,category)
+    else
+      js_file = nil
+      partial_create(html_file,css_file,js_file,category)
+    end
+  end
+
+  def partial_create(html_file,css_file,js_file,category)
+    Action.new.new_file!(html_file,"_#{category}.html.erb","views/shared")
+    Action.new.new_file!(css_file,"#{category}.css","app/assets/stylesheets")
+    if category == "header"
+      Action.new.insert_into_file!("before","views/layouts/application.html.erb"," render 'shared/header'","yield")
+    else
+      Action.new.insert_into_file!("after","views/layouts/application.html.erb"," render 'shared/footer'","yield")
+    end
+    if js_file != nil
+      Action.new.new_file!(js_file,"#{category}.js","app/assets/javascripts")
+    else
+    end
+  end
+
+  def api_fetch(key)
+    template = ApiCall.template_search(key)
+    html_file = "#{WEB_URL}#{template["template"]["file"]["url"]}"
+    css_file = "#{WEB_URL}#{template["template"]["css_file"]["url"]}"
+    if template["template"]["js_file"] == nil
+      js_file = "#{WEB_URL}#{template["template"]["js_file"]["url"]}"
+      return html_file,css_file,js_file
+    else
+      return html_file,css_file
     end
   end
   def header_only
-    header_list
+    get_header(header_list)
   end
   def footer_only
-    footer_list
+    get_footer(footer_list)
   end
   def header_list
     a= ApiCall.header_list
@@ -165,7 +217,9 @@ class PagesDescription
     if choice.to_i > 4
       header_list
     else
-      return choice
+      hader = {}
+      hader = a["template"][(choice.to_i - 1)]["key"]
+      return choice,hader
     end
   end
 
@@ -184,7 +238,7 @@ class PagesDescription
 
   def footer_list
     a= ApiCall.footer_list
-    puts("Enter Your Choice about Header")
+    puts("Enter Your Choice about Footer")
     puts("click on link to preview the Footer")
     puts("1.Footer first #{"#{WEB_URL}templates/#{a["template"].first["id"]}"}")
     puts("2.Footer second #{"#{WEB_URL}templates/#{a["template"][1]["id"]}"}")
@@ -194,7 +248,9 @@ class PagesDescription
     if choice.to_i > 4
       footer_list
     else
-      return choice
+      foter = {}
+      foter = a["template"][(choice.to_i - 1)]["key"]
+      return choice,foter
     end
   end
 end
