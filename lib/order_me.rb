@@ -5,8 +5,8 @@ module OrderMe
     def self.install
       puts("Hello, Welcome to Order Me Hold Tight For Reveolution.")
       puts("Enter Your Choices")
-      puts("1. Manualy")
-      puts("2. Speking")
+      puts("1. Manually")
+      puts("2. Speaking")
       puts("Enter Q to Quit")
       program = ""
       input = ""
