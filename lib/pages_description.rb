@@ -1,7 +1,7 @@
-require "./action"
-require_relative "./api_call"
+require "action"
+require_relative "api_call"
 require 'json'
-require "./constant"
+require "constant"
 class PagesDescription
   include ApiCall
   def pages_select
@@ -175,14 +175,14 @@ class PagesDescription
 
   def partial_create(html_file,css_file,js_file,category)
     Action.new.new_file!(html_file,"_#{category}.html.erb","views/shared")
-    Action.new.new_file!(css_file,"#{category}.css","app/assets/stylesheets")
+    Action.new.new_file!(css_file,"#{category}.css","assets/stylesheets")
     if category == "header"
       Action.new.insert_into_file!("before","views/layouts/application.html.erb"," render 'shared/header'","yield")
     else
       Action.new.insert_into_file!("after","views/layouts/application.html.erb"," render 'shared/footer'","yield")
     end
     if js_file != nil
-      Action.new.new_file!(js_file,"#{category}.js","app/assets/javascripts")
+      Action.new.new_file!(js_file,"#{category}.js","assets/javascripts")
     else
     end
   end

@@ -1,7 +1,7 @@
 module ApiCall
   require 'net/http'
   require 'json'
-  require "./constant"
+  require "constant"
 
   def self.header_list
     uri = URI("#{API_URL}header_list")
