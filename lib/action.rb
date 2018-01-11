@@ -17,8 +17,8 @@ class Action < Thor
   end
   desc "append_file!", "put the text in file"
   def append_file!(append_location,message)
-    append_to_file 'config/routes.rb' do
-      'root: "home#index"'
+    append_to_file "#{append_location}" do
+      "#{message}"
     end
   end
   desc "insert_into_file!", "put the text to insert anything in file"

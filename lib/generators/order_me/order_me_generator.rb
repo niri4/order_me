@@ -4,7 +4,7 @@ class OrderMeGenerator < Rails::Generators::NamedBase
     install_dependency
        copy_file "order_me.rb", "lib/order_me.rb"
    #remove_file "app/assets/stylesheets/application.css"
-   copy_file "application.css.scss", "app/assets/stylesheets/application.css.scss"
+   copy_file "application.css.scss", "app/assets/stylesheets/order_me_application.css.scss"
     insert_into_file "app/assets/javascripts/application.js", "//= require jquery
 //= require bootstrap-sprockets
 //= require jquery_ujs", :before => "//= require rails-ujs"

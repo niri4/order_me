@@ -178,8 +178,10 @@ class PagesDescription
     Action.new.new_file!(css_file,"#{category}.css","assets/stylesheets")
     if category == "header"
       Action.new.insert_into_file!("before","views/layouts/application.html.erb"," render 'shared/header'","yield")
+      Action.new.append_file!("app/assets/stylesheets/order_me_application.css.scss","@import 'header';")
     else
       Action.new.insert_into_file!("after","views/layouts/application.html.erb"," render 'shared/footer'","yield")
+      Action.new.append_file!("app/assets/stylesheets/order_me_application.css.scss","@import 'footer';")
     end
     if js_file != nil
       Action.new.new_file!(js_file,"#{category}.js","assets/javascripts")
