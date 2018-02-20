@@ -8,7 +8,7 @@ module ApiCall
     a = Net::HTTP.get(uri)
      b= JSON.parse(a)
      if  b["status"] == "true"
-          return b
+       return b
      else
      end
    end
@@ -18,7 +18,7 @@ module ApiCall
      a = Net::HTTP.get(uri)
       b= JSON.parse(a)
       if  b["status"] == "true"
-           return b
+        return b
       else
       end
     end
@@ -28,7 +28,7 @@ module ApiCall
       res = Net::HTTP.post_form(uri, 'key' => key)
       b= JSON.parse(res.body)
       if  b["status"] == "true"
-           return  b
+        return  b
       else
       end
     end

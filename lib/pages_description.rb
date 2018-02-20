@@ -129,17 +129,12 @@ class PagesDescription
     end
   end
   def common_header_footer
-    # application_layout_modify("both")
     puts("You have selected common Header and Footer")
     puts("Given a choice to select header of your choice")
     puts("Header list")
     get_header(header_list)
     puts("Footer list")
     get_footer(footer_list)
-  end
-
-  def application_layout_modify(category)
-    # if
   end
 
   def get_header(header)
@@ -208,7 +203,6 @@ class PagesDescription
   end
   def header_list
     a= ApiCall.header_list
-
     puts("Enter Your Choice about Header")
     puts("click on link to preview the header")
     puts("1.header first #{"#{WEB_URL}templates/#{a["template"].first["id"]}"}")
@@ -227,15 +221,11 @@ class PagesDescription
 
   def header_view_more
     puts("Enter Your key to apply that Header")
-    key = gets()
-    #TOdo need to be implemented
-    #download_header(key)
+    key = gets
   end
   def footer_view_more
     puts("Enter Your key to apply that Footer")
-    key = gets()
-    #Todo need to be implemented
-    #download_footer(key)
+    key = gets
   end
 
   def footer_list

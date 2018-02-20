@@ -1,3 +1,7 @@
 
 require "order_me"
-OrderMe::Action.install
+begin
+  OrderMe::Action.install
+rescue Interrupt => e
+  trap("SIGINT") { raise "Intrupted" }
+end
