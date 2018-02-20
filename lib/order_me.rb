@@ -1,6 +1,8 @@
 require "order_me/version"
+require "pages_description"
+require "exceptional_call"
 module OrderMe
-  require "pages_description"
+
   class Action
     def self.install
       puts("Hello, Welcome to Order Me Hold Tight For Reveolution.")
@@ -35,7 +37,7 @@ module OrderMe
               input +=line
             end
           rescue SystemExit, Interrupt
-            trap("SIGINT") { raise "Intrupted" }
+            ExceptionCall.method(:interrupt).call
           rescue Exception => e
              raise "Abort!! , some Error Occur #{e.message}"
           end
