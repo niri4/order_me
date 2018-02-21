@@ -64,7 +64,7 @@ class PagesDescription
       rescue SystemExit, Interrupt
         ExceptionCall.method(:interrupt).call
       rescue Exception => e
-         raise "Abort!! , some Error Occur #{e.message}"
+         puts "Abort!! , some Error Occur #{e.message}"
       end
     end
   end
@@ -72,7 +72,7 @@ class PagesDescription
   def page_heading(page_count)
     puts("Enter Pages headings")
     puts("plaese make sure write with comma seprated eg home,about us,contact us.")
-    page_get = gets()
+    page_get = gets
     a= page_get.split(',')
     if a.length == page_count
       @@page_get = page_get
@@ -81,10 +81,10 @@ class PagesDescription
       end
       puts("you Have selected #{page_count} pages,pages name is #{@@page_get}")
       layout_choice
-      exit()
+      exit
     else
       puts("Please Enter the pages correctly")
-      page_heading(page_count)
+      method(__method__).call(page_count)
     end
   end
 
@@ -98,40 +98,40 @@ class PagesDescription
     input_layout = ""
     line_layout = ""
     count =0
-    until line_layout.strip() == "q"
+    until line_layout.strip == "q"
       print("?- ")
-      line_layout  = gets()
-      case(line_layout.strip())
+      line_layout  = gets
+      case(line_layout.strip)
       when '1'
         if count == 0
           common_header_footer
           count+= 1
-          exit()
+          exit
         else
-          exit()
+          exit
         end
       when '2'
         if count == 0
           header_only
           count+= 1
-          exit()
+          exit
         else
-          exit()
+          exit
         end
       when '3'
         if count == 0
           footer_only
           count+= 1
-          exit()
+          exit
         else
-          exit()
+          exit
         end
       when '4'
         puts("Additional function come in future")
-        layout_choice
+        method(__method__).call(page_count)
       else
         puts("Please enter your choice in these option only.")
-        layout_choice
+        method(__method__).call(page_count)
       end
     end
   end
@@ -216,7 +216,7 @@ class PagesDescription
     puts("2.header second #{"#{WEB_URL}templates/#{a["template"][1]["id"]}"}")
     puts("3 header third #{"#{WEB_URL}templates/#{a["template"][2]["id"]}"}")
     puts("4. View More #{"#{WEB_URL}templates/"}")
-    choice = gets()
+    choice = gets
     if choice.to_i > 4
       header_list
     else
