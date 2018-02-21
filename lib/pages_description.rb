@@ -77,7 +77,8 @@ class PagesDescription
     if a.length == page_count
       @@page_get = page_get
       page_get.split(',').each do |page_name|
-        Action.new.empty_directory! page_name
+        #Action.new.empty_directory! page_name
+        store_type_choice?
       end
       puts("you Have selected #{page_count} pages,pages name is #{@@page_get}")
       layout_choice
@@ -86,6 +87,44 @@ class PagesDescription
       puts("Please Enter the pages correctly")
       method(__method__).call(page_count)
     end
+  end
+
+  def store_type_choice?
+    puts("Did you want directory or a single file")
+    puts("1. want Directory")
+    puts("2. want file at single storage")
+    store_type_choice = gets
+    case(store_type_choice.strip)
+    when '1'
+      want_directory?
+    when '2'
+      want_file_store?
+    else
+      puts("Enter valid choice")
+      store_type_choice?
+    end
+  end
+
+  def want_directory?
+    puts("Your selected choice is directory")
+    puts("Enter Directory name")
+    directory_name = gets
+    puts("Enter file location")
+    puts("NOTE: Enter location in between your app")
+    puts("Example: app/views")
+    file_location = gets
+    puts("Enter your File Name")
+    puts("Example: for html.erb file type only file name home not home.html.erb")
+    file_name = gets
+    Action.new.new_file_manual_loc!(file_location.strip + "/" + directory_name.strip,file_name.strip + ".html.erb")
+  end
+
+  def want_file_store?
+    puts("Your Selected Choice is file at single storage")
+    puts("Enter File name")
+    puts("Example: for html.erb file type only file name home not home.html.erb")
+    file_name = gets
+    Action.new.new_file_manual_loc!("app/views/static",file_name.strip + ".html.erb")
   end
 
   def layout_choice

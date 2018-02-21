@@ -15,6 +15,10 @@ class Action < Thor
   def new_file!(link,location,filename)
     get link, "app/#{filename}/#{location}"
   end
+  desc "new_file_manual_loc!","create the file at manual location"
+  def new_file_manual_loc!(destination,file_name)
+    create_file "#{destination}/#{file_name}" 
+  end
   desc "append_file!", "put the text in file"
   def append_file!(append_location,message)
     append_to_file "#{append_location}" do
