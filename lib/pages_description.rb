@@ -77,7 +77,6 @@ class PagesDescription
     if a.length == page_count
       @@page_get = page_get
       page_get.split(',').each do |page_name|
-        #Action.new.empty_directory! page_name
         store_type_choice?
       end
       puts("you Have selected #{page_count} pages,pages name is #{@@page_get}")
@@ -117,6 +116,13 @@ class PagesDescription
     puts("Example: for html.erb file type only file name home not home.html.erb")
     file_name = gets
     Action.new.new_file_manual_loc!(file_location.strip + "/" + directory_name.strip,file_name.strip + ".html.erb")
+    puts("Your File has been created as #{file_location.strip + '/' + directory_name.strip,file_name.strip + '.html.erb'}")
+    puts("routes define as GET request")
+    #define_routes(directory_name,file_name)
+  end
+  # TODO: need to complete route call
+  def define_routes
+    Action.new.insert_into_file!("after","config/routes.rb",%Q(get "#{directory_name/file_name}" => "#{directory_name}# #{file_name}"),"Rails.application.routes.draw do")
   end
 
   def want_file_store?
