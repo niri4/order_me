@@ -17,7 +17,7 @@ class Action < Thor
   end
   desc "new_file_manual_loc!","create the file at manual location"
   def new_file_manual_loc!(destination,file_name)
-    create_file "#{destination}/#{file_name}" 
+    create_file "#{destination}/#{file_name}"
   end
   desc "append_file!", "put the text in file"
   def append_file!(append_location,message)
@@ -27,7 +27,7 @@ class Action < Thor
   end
   desc "insert_into_file!", "put the text to insert anything in file"
   def insert_into_file!(action,path,data,on_perform)
-      insert_into_file "app/#{path}", "<%= #{data}%>", action.to_sym => "<%= #{on_perform} %>"
+      insert_into_file "#{path}", " #{data}", action.to_sym => "<%= #{on_perform} %>"
   end
 
   desc "replacement_in_file!", "replacement_in_file"
