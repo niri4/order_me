@@ -119,12 +119,12 @@ class PagesDescription
     puts("Your File has been created as #{file_location.strip}/#{directory_name.strip}/#{file_name.strip}.html.erb")
     define_routes(directory_name,file_name)
   end
-  # TODO: need to complete route call
+  
   def define_routes(directory_name,file_name)
     puts("Define contrroller name as app/controllers/ #{directory_name.classify}")
     Action.new.new_file_manual_loc!("app/controllers/",directory_name.strip.downcase + "_controller.rb")
     puts("routes define as GET request")
-    Action.new.insert_into_file!("after","config/routes.rb",%Q(get "#{directory_name.strip.downcase + '/' + file_name.strip}" => "#{directory_name.strip.downcase} + '#' + #{file_name.strip}"),"Rails.application.routes.draw do")
+    Action.new.insert_into_file!("after","config/routes.rb",%Q(\n get "#{directory_name.strip.downcase + '/' + file_name.strip}" => "#{directory_name.strip.downcase}##{file_name.strip}"),"Rails.application.routes.draw do")
   end
 
   def want_file_store?
@@ -226,10 +226,10 @@ class PagesDescription
     Action.new.new_file!(html_file,"_#{category}.html.erb","views/shared")
     Action.new.new_file!(css_file,"#{category}.css","assets/stylesheets")
     if category == "header"
-      Action.new.insert_into_file!("before","app/views/layouts/application.html.erb"," <%= render 'shared/header' %>","yield")
+      Action.new.insert_into_file!("before","app/views/layouts/application.html.erb"," <%= render 'shared/header' %>","<%= yield%>")
       Action.new.append_file!("app/assets/stylesheets/order_me_application.css.scss","@import 'header';")
     else
-      Action.new.insert_into_file!("after","app/views/layouts/application.html.erb"," <%= render 'shared/footer' %>","yield")
+      Action.new.insert_into_file!("after","app/views/layouts/application.html.erb"," <%= render 'shared/footer' %>","<%= yield %>")
       Action.new.append_file!("app/assets/stylesheets/order_me_application.css.scss","@import 'footer';")
     end
     if js_file != nil
@@ -290,7 +290,7 @@ class PagesDescription
     puts("2.Footer second #{"#{WEB_URL}templates/#{a["template"][1]["id"]}"}")
     puts("3 Footer third #{"#{WEB_URL}templates/#{a["template"][2]["id"]}"}")
     puts("4. View More #{"#{WEB_URL}templates/"}")
-    choice = gets()
+    choice = gets
     if choice.to_i > 4
       footer_list
     else
