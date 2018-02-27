@@ -112,11 +112,11 @@ class PagesDescription
     puts("NOTE: Enter location in between your app")
     puts("Example: app/views")
     file_location = gets
-    puts("Enter your File Name")
-    puts("Example: for html.erb file type only file name home not home.html.erb")
     puts("by default file_name is #{page_name.strip} want to change press N or n")
     page_name_choice = gets
-    if page_name_choice.strip == "n"
+    if page_name_choice.strip == "n" || "N"
+      puts("Enter your File Name")
+      puts("Example: for html.erb file type only file name home not home.html.erb")
       file_name = gets
     else
       file_name = page_name.strip
@@ -158,11 +158,11 @@ class PagesDescription
 
   def want_file_store?(page_name)
     puts("Your Selected Choice is file at single storage")
-    puts("Enter File name")
-    puts("Example: for html.erb file type only file name home not home.html.erb")
     puts("by default file_name is #{page_name.strip} want to change press N or n")
     page_name_choice = gets
-    if page_name_choice.strip == "n"
+    if page_name_choice.strip == "n" || "N"
+      puts("Enter File name")
+      puts("Example: for html.erb file type only file name home not home.html.erb")
       file_name = gets
     else
       file_name = page_name.strip
