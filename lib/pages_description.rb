@@ -77,7 +77,7 @@ class PagesDescription
     if a.length == page_count
       @@page_get = page_get
       page_get.split(',').each do |page_name|
-        store_type_choice?
+        store_type_choice?(page_name)
       end
       puts("you Have selected #{page_count} pages,pages name is #{@@page_get}")
       layout_choice
@@ -88,23 +88,23 @@ class PagesDescription
     end
   end
 
-  def store_type_choice?
+  def store_type_choice?(page_name)
     puts("Did you want directory or a single file")
     puts("1. want Directory")
     puts("2. want file at single storage")
     store_type_choice = gets
     case(store_type_choice.strip)
     when '1'
-      want_directory?
+      want_directory?(page_name)
     when '2'
-      want_file_store?
+      want_file_store?(page_name)
     else
       puts("Enter valid choice")
       store_type_choice?
     end
   end
 
-  def want_directory?
+  def want_directory?(page_name)
     puts("Your selected choice is directory")
     puts("Enter Directory name")
     directory_name = gets
@@ -114,7 +114,13 @@ class PagesDescription
     file_location = gets
     puts("Enter your File Name")
     puts("Example: for html.erb file type only file name home not home.html.erb")
-    file_name = gets
+    puts("by default file_name is #{page_name.strip} want to change press N or n")
+    page_name_choice = gets
+    if page_name_choice.strip == "n"
+      file_name = gets
+    else
+      file_name = page_name.strip
+    end
     Action.new.new_file_manual_loc!(file_location.strip + "/" + directory_name.strip.downcase,file_name.strip + ".html.erb")
     puts("Your File has been created as #{file_location.strip}/#{directory_name.strip}/#{file_name.strip}.html.erb")
     define_routes(directory_name,file_name)
@@ -125,19 +131,19 @@ class PagesDescription
     File.open("app/controllers/" + directory_name.downcase + "_controller.rb", 'w') { |file| file.write(controller) }
   end
   def controller_struc(directory_name,file_name)
-    return %Q(class #{directory_name.classify} < ApplicationController\n\tdef #{file_name}\n\tend\nend)
+    return %Q(class #{directory_name.classify}Controller < ApplicationController\n\tdef #{file_name}\n\tend\nend)
   end
-# TODO: need to be test 
+
   def add_action_to_controller(directory_name,file_name)
     Action.new.insert_into_file!("after","app/controllers/" + directory_name.downcase + "_controller.rb",
       %Q(\n\tdef #{file_name}\n\tend),
-      "class #{directory_name.classify} < ApplicationController")
+      "class #{directory_name.classify}Controller < ApplicationController")
   end
 
   def define_routes(directory_name,file_name)
     puts("Define contrroller name as app/controllers/#{directory_name.strip.downcase}_controller.rb")
-    Action.new.new_file_manual_loc!("app/controllers/",directory_name.strip.downcase + "_controller.rb") if !File.file?("app/controllers/#{directory_name.strip.downcase}_controller.rb")
     if !File.file?("app/controllers/#{directory_name.strip.downcase}_controller.rb")
+      Action.new.new_file_manual_loc!("app/controllers/",directory_name.strip.downcase + "_controller.rb")
       puts("defining controller")
       define_controller(directory_name.strip,file_name.strip)
     else
@@ -150,12 +156,20 @@ class PagesDescription
       "Rails.application.routes.draw do")
   end
 
-  def want_file_store?
+  def want_file_store?(page_name)
     puts("Your Selected Choice is file at single storage")
     puts("Enter File name")
     puts("Example: for html.erb file type only file name home not home.html.erb")
-    file_name = gets
+    puts("by default file_name is #{page_name.strip} want to change press N or n")
+    page_name_choice = gets
+    if page_name_choice.strip == "n"
+      file_name = gets
+    else
+      file_name = page_name.strip
+    end
     Action.new.new_file_manual_loc!("app/views/static",file_name.strip + ".html.erb")
+    puts("Your File has been created as app/views/static/#{file_name.strip}.html.erb")
+    define_routes("static",file_name)
   end
 
   def layout_choice
