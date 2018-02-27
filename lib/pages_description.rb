@@ -119,12 +119,35 @@ class PagesDescription
     puts("Your File has been created as #{file_location.strip}/#{directory_name.strip}/#{file_name.strip}.html.erb")
     define_routes(directory_name,file_name)
   end
-  
+
+  def define_controller(directory_name,file_name)
+    controller = controller_struc(directory_name,file_name)
+    File.open("app/controllers/" + directory_name.downcase + "_controller.rb", 'w') { |file| file.write(controller) }
+  end
+  def controller_struc(directory_name,file_name)
+    return %Q(class #{directory_name.classify} < ApplicationController\n\tdef #{file_name}\n\tend\nend)
+  end
+# TODO: need to be test 
+  def add_action_to_controller(directory_name,file_name)
+    Action.new.insert_into_file!("after","app/controllers/" + directory_name.downcase + "_controller.rb",
+      %Q(\n\tdef #{file_name}\n\tend),
+      "class #{directory_name.classify} < ApplicationController")
+  end
+
   def define_routes(directory_name,file_name)
-    puts("Define contrroller name as app/controllers/ #{directory_name.classify}")
-    Action.new.new_file_manual_loc!("app/controllers/",directory_name.strip.downcase + "_controller.rb")
+    puts("Define contrroller name as app/controllers/#{directory_name.strip.downcase}_controller.rb")
+    Action.new.new_file_manual_loc!("app/controllers/",directory_name.strip.downcase + "_controller.rb") if !File.file?("app/controllers/#{directory_name.strip.downcase}_controller.rb")
+    if !File.file?("app/controllers/#{directory_name.strip.downcase}_controller.rb")
+      puts("defining controller")
+      define_controller(directory_name.strip,file_name.strip)
+    else
+      puts("Adding the action to the controller")
+      add_action_to_controller(directory_name.strip,file_name.strip)
+    end
     puts("routes define as GET request")
-    Action.new.insert_into_file!("after","config/routes.rb",%Q(\n get "#{directory_name.strip.downcase + '/' + file_name.strip}" => "#{directory_name.strip.downcase}##{file_name.strip}"),"Rails.application.routes.draw do")
+    Action.new.insert_into_file!("after","config/routes.rb",
+      %Q(\n\t get "#{directory_name.strip.downcase + '/' + file_name.strip}" => "#{directory_name.strip.downcase}##{file_name.strip}"),
+      "Rails.application.routes.draw do")
   end
 
   def want_file_store?
