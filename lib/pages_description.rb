@@ -100,7 +100,7 @@ class PagesDescription
       want_file_store?(page_name)
     else
       puts("Enter valid choice")
-      store_type_choice?
+      store_type_choice?(page_name)
     end
   end
 
@@ -113,22 +113,31 @@ class PagesDescription
     else
       puts("Enter Directory name")
       directory_name = gets
-      puts("Enter file location")
-      puts("NOTE: Enter location in between your app")
-      puts("Example: app/views")
-      file_location = gets
-      puts("by default file_name is #{page_name.strip} want to change press N or n")
-      page_name_choice = gets
-      if page_name_choice.strip == "n" || page_name_choice.strip ==  "N"
-        puts("Enter your File Name")
-        puts("Example: for html.erb file type only file name home not home.html.erb")
-        file_name = gets
+      if directory_name.strip.empty?
+        puts("Directory Name cannot be empty.")
+        want_directory?(page_name)
       else
-        file_name = page_name.strip
+        puts("Enter file location")
+        puts("NOTE: Enter location in between your app by default app/views")
+        puts("Example: app/views")
+        file_location = gets
+        if file_location.strip.empty?
+          puts("location chosen as app/views")
+          file_location = "app/views"
+        end
+        puts("by default file_name is #{page_name.strip} want to change press N or n")
+        page_name_choice = gets
+        if page_name_choice.strip == "n" || page_name_choice.strip ==  "N"
+          puts("Enter your File Name")
+          puts("Example: for html.erb file type only file name home not home.html.erb")
+          file_name = gets
+        else
+          file_name = page_name.strip
+        end
+        Action.new.new_file_manual_loc!(file_location.strip + "/" + directory_name.strip.downcase,file_name.strip + ".html.erb")
+        puts("Your File has been created as #{file_location.strip}/#{directory_name.strip}/#{file_name.strip}.html.erb")
+        define_routes(directory_name,file_name)
       end
-      Action.new.new_file_manual_loc!(file_location.strip + "/" + directory_name.strip.downcase,file_name.strip + ".html.erb")
-      puts("Your File has been created as #{file_location.strip}/#{directory_name.strip}/#{file_name.strip}.html.erb")
-      define_routes(directory_name,file_name)
     end
   end
 
@@ -275,10 +284,10 @@ class PagesDescription
     Action.new.new_file!(html_file,"_#{category}.html.erb","views/shared")
     Action.new.new_file!(css_file,"#{category}.css","assets/stylesheets")
     if category == "header"
-      Action.new.insert_into_file!("before","app/views/layouts/application.html.erb"," <%= render 'shared/header' %>","<%= yield%>")
+      Action.new.insert_into_file!("before","app/views/layouts/application.html.erb"," <%= render 'shared/header' %>","\n<%= yield%>")
       Action.new.append_file!("app/assets/stylesheets/order_me_application.css.scss","@import 'header';")
     else
-      Action.new.insert_into_file!("after","app/views/layouts/application.html.erb"," <%= render 'shared/footer' %>","<%= yield %>")
+      Action.new.insert_into_file!("after","app/views/layouts/application.html.erb","\n <%= render 'shared/footer' %>","<%= yield %>")
       Action.new.append_file!("app/assets/stylesheets/order_me_application.css.scss","@import 'footer';")
     end
     if js_file != nil
