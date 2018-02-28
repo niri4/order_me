@@ -5,9 +5,8 @@ class OrderMeGenerator < Rails::Generators::NamedBase
        copy_file "order_me.rb", "lib/order_me.rb"
    #remove_file "app/assets/stylesheets/application.css"
    copy_file "application.css.scss", "app/assets/stylesheets/order_me_application.css.scss"
-    insert_into_file "app/assets/javascripts/application.js", "//= require jquery
-//= require bootstrap-sprockets
-//= require jquery_ujs", :before => "//= require rails-ujs"
+    insert_into_file "app/assets/javascripts/application.js", "//= require jquery \n //= require bootstrap-sprockets\n //= require jquery_ujs",
+                    :before => "//= require rails-ujs"
     append_to_file 'config/initializers/assets.rb' do
       'Rails.application.config.assets.precompile += %w( order_me_application.css.scss )'
     end

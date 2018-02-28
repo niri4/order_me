@@ -288,7 +288,7 @@ class PagesDescription
       Action.new.append_file!("app/assets/stylesheets/order_me_application.css.scss","@import 'header';")
     else
       Action.new.insert_into_file!("after","app/views/layouts/application.html.erb","\n <%= render 'shared/footer' %>","<%= yield %>")
-      Action.new.append_file!("app/assets/stylesheets/order_me_application.css.scss","@import 'footer';")
+      Action.new.append_file!("app/assets/stylesheets/order_me_application.css.scss","\n @import 'footer';")
     end
     if js_file != nil
       Action.new.new_file!(js_file,"#{category}.js","assets/javascripts")
