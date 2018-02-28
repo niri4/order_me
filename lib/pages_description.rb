@@ -106,24 +106,30 @@ class PagesDescription
 
   def want_directory?(page_name)
     puts("Your selected choice is directory")
-    puts("Enter Directory name")
-    directory_name = gets
-    puts("Enter file location")
-    puts("NOTE: Enter location in between your app")
-    puts("Example: app/views")
-    file_location = gets
-    puts("by default file_name is #{page_name.strip} want to change press N or n")
-    page_name_choice = gets
-    if page_name_choice.strip == "n" || "N"
-      puts("Enter your File Name")
-      puts("Example: for html.erb file type only file name home not home.html.erb")
-      file_name = gets
+    puts("want to revert your decision (y/n)")
+    revert_choice = gets
+    if revert_choice.strip == "y" || revert_choice.strip == "Y"
+      method((caller[0][/`([^']*)'/, 1]).to_sym).call(page_name)
     else
-      file_name = page_name.strip
+      puts("Enter Directory name")
+      directory_name = gets
+      puts("Enter file location")
+      puts("NOTE: Enter location in between your app")
+      puts("Example: app/views")
+      file_location = gets
+      puts("by default file_name is #{page_name.strip} want to change press N or n")
+      page_name_choice = gets
+      if page_name_choice.strip == "n" || page_name_choice.strip ==  "N"
+        puts("Enter your File Name")
+        puts("Example: for html.erb file type only file name home not home.html.erb")
+        file_name = gets
+      else
+        file_name = page_name.strip
+      end
+      Action.new.new_file_manual_loc!(file_location.strip + "/" + directory_name.strip.downcase,file_name.strip + ".html.erb")
+      puts("Your File has been created as #{file_location.strip}/#{directory_name.strip}/#{file_name.strip}.html.erb")
+      define_routes(directory_name,file_name)
     end
-    Action.new.new_file_manual_loc!(file_location.strip + "/" + directory_name.strip.downcase,file_name.strip + ".html.erb")
-    puts("Your File has been created as #{file_location.strip}/#{directory_name.strip}/#{file_name.strip}.html.erb")
-    define_routes(directory_name,file_name)
   end
 
   def define_controller(directory_name,file_name)
@@ -158,18 +164,24 @@ class PagesDescription
 
   def want_file_store?(page_name)
     puts("Your Selected Choice is file at single storage")
-    puts("by default file_name is #{page_name.strip} want to change press N or n")
-    page_name_choice = gets
-    if page_name_choice.strip == "n" || "N"
-      puts("Enter File name")
-      puts("Example: for html.erb file type only file name home not home.html.erb")
-      file_name = gets
+    puts("want to revert your decision (y/n)")
+    revert_choice = gets
+    if revert_choice.strip == "y" || revert_choice.strip == "Y"
+      method((caller[0][/`([^']*)'/, 1]).to_sym).call(page_name)
     else
-      file_name = page_name.strip
+      puts("by default file_name is #{page_name.strip} want to change press N or n")
+      page_name_choice = gets
+      if page_name_choice.strip == "n" || page_name_choice.strip ==  "N"
+        puts("Enter File name")
+        puts("Example: for html.erb file type only file name home not home.html.erb")
+        file_name = gets
+      else
+        file_name = page_name.strip
+      end
+      Action.new.new_file_manual_loc!("app/views/static",file_name.strip + ".html.erb")
+      puts("Your File has been created as app/views/static/#{file_name.strip}.html.erb")
+      define_routes("static",file_name)
     end
-    Action.new.new_file_manual_loc!("app/views/static",file_name.strip + ".html.erb")
-    puts("Your File has been created as app/views/static/#{file_name.strip}.html.erb")
-    define_routes("static",file_name)
   end
 
   def layout_choice
