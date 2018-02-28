@@ -75,13 +75,18 @@ class PagesDescription
     page_get = gets
     a= page_get.split(',')
     if a.length == page_count
-      @@page_get = page_get
-      page_get.split(',').each do |page_name|
-        store_type_choice?(page_name)
+      if a.grep(/\A\D/).length == page_count
+        @@page_get = page_get
+        page_get.split(',').each do |page_name|
+          store_type_choice?(page_name)
+        end
+        puts("you Have selected #{page_count} pages,pages name is #{@@page_get}")
+        layout_choice
+        exit
+      else
+        puts("page heading should not contain numeric at start")
+        method(__method__).call(page_count)
       end
-      puts("you Have selected #{page_count} pages,pages name is #{@@page_get}")
-      layout_choice
-      exit
     else
       puts("Please Enter the pages correctly")
       method(__method__).call(page_count)
@@ -115,28 +120,38 @@ class PagesDescription
       directory_name = gets
       if directory_name.strip.empty?
         puts("Directory Name cannot be empty.")
-        want_directory?(page_name)
+        method(__method__).call(page_name)
       else
-        puts("Enter file location")
-        puts("NOTE: Enter location in between your app by default app/views")
-        puts("Example: app/views")
-        file_location = gets
-        if file_location.strip.empty?
-          puts("location chosen as app/views")
-          file_location = "app/views"
-        end
-        puts("by default file_name is #{page_name.strip} want to change press N or n")
-        page_name_choice = gets
-        if page_name_choice.strip == "n" || page_name_choice.strip ==  "N"
-          puts("Enter your File Name")
-          puts("Example: for html.erb file type only file name home not home.html.erb")
-          file_name = gets
+        if !check_formet(directory_name.strip)
+          puts("Enter file location")
+          puts("NOTE: Enter location in between your app by default app/views")
+          puts("Example: app/views")
+          file_location = gets
+          if file_location.strip.empty?
+            puts("location chosen as app/views")
+            file_location = "app/views"
+          end
+          puts("by default file_name is #{page_name.strip} want to change press N or n")
+          page_name_choice = gets
+          if page_name_choice.strip == "n" || page_name_choice.strip ==  "N"
+            puts("Enter your File Name")
+            puts("Example: for html.erb file type only file name home not home.html.erb")
+            file_name = gets
+          else
+            file_name = page_name.strip
+          end
+          if !check_formet(file_name.strip)
+            Action.new.new_file_manual_loc!(file_location.strip + "/" + directory_name.strip.downcase,file_name.strip + ".html.erb")
+            puts("Your File has been created as #{file_location.strip}/#{directory_name.strip}/#{file_name.strip}.html.erb")
+            define_routes(directory_name,file_name)
+          else
+            puts("file_name should not contain numeric at start")
+            method(__method__).call(page_name)
+          end
         else
-          file_name = page_name.strip
+          puts("directory_name should not contain numeric at start")
+          method(__method__).call(page_name)
         end
-        Action.new.new_file_manual_loc!(file_location.strip + "/" + directory_name.strip.downcase,file_name.strip + ".html.erb")
-        puts("Your File has been created as #{file_location.strip}/#{directory_name.strip}/#{file_name.strip}.html.erb")
-        define_routes(directory_name,file_name)
       end
     end
   end
@@ -153,6 +168,10 @@ class PagesDescription
     Action.new.insert_into_file!("after","app/controllers/" + directory_name.downcase + "_controller.rb",
       %Q(\n\tdef #{file_name}\n\tend),
       "class #{directory_name.classify}Controller < ApplicationController")
+  end
+
+  def check_formet(file_name)
+    file_name.scan(/\A\D/).empty?
   end
 
   def define_routes(directory_name,file_name)
@@ -184,6 +203,10 @@ class PagesDescription
         puts("Enter File name")
         puts("Example: for html.erb file type only file name home not home.html.erb")
         file_name = gets
+        if !check_formet(file_name.strip)
+        else
+          method(__method__).call(page_name)
+        end
       else
         file_name = page_name.strip
       end
