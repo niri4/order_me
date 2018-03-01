@@ -114,7 +114,11 @@ class PagesDescription
     puts("want to revert your decision (y/n)")
     revert_choice = gets
     if revert_choice.strip == "y" || revert_choice.strip == "Y"
-      method((caller[0][/`([^']*)'/, 1]).to_sym).call(page_name)
+      begin
+        method((caller[0][/`([^']*)'/, 1]).to_sym).call(page_name)
+      rescue
+        store_type_choice?(page_name)
+      end
     else
       puts("Enter Directory name")
       directory_name = gets
@@ -140,12 +144,12 @@ class PagesDescription
           else
             file_name = page_name.strip
           end
-          if !check_formet(file_name.strip)
+          if !check_formet(file_name.strip) && !File.read("config/routes.rb").include?(%Q(get "#{directory_name.strip.downcase + '/' + file_name.strip}" => "#{directory_name.strip.downcase}##{file_name.strip}"))
             Action.new.new_file_manual_loc!(file_location.strip + "/" + directory_name.strip.downcase,file_name.strip + ".html.erb")
             puts("Your File has been created as #{file_location.strip}/#{directory_name.strip}/#{file_name.strip}.html.erb")
             define_routes(directory_name,file_name)
           else
-            puts("file_name should not contain numeric at start")
+            puts("file_name should not contain numeric at start or already register route with this action")
             method(__method__).call(page_name)
           end
         else
@@ -195,7 +199,11 @@ class PagesDescription
     puts("want to revert your decision (y/n)")
     revert_choice = gets
     if revert_choice.strip == "y" || revert_choice.strip == "Y"
-      method((caller[0][/`([^']*)'/, 1]).to_sym).call(page_name)
+      begin
+        method((caller[0][/`([^']*)'/, 1]).to_sym).call(page_name)
+      rescue
+        store_type_choice?(page_name)
+      end
     else
       puts("by default file_name is #{page_name.strip} want to change press N or n")
       page_name_choice = gets
@@ -203,16 +211,22 @@ class PagesDescription
         puts("Enter File name")
         puts("Example: for html.erb file type only file name home not home.html.erb")
         file_name = gets
-        if !check_formet(file_name.strip)
+        if !check_formet(file_name.strip)  && !File.read("config/routes.rb").include?(%Q(get "#{"static" + '/' + file_name.strip}" => "static##{file_name.strip}"))
         else
+          puts("file_name should not contain numeric at start or already register route with this action")
           method(__method__).call(page_name)
         end
       else
         file_name = page_name.strip
       end
-      Action.new.new_file_manual_loc!("app/views/static",file_name.strip + ".html.erb")
-      puts("Your File has been created as app/views/static/#{file_name.strip}.html.erb")
-      define_routes("static",file_name)
+      if !File.read("config/routes.rb").include?(%Q(get "#{"static" + '/' + file_name.strip}" => "static##{file_name.strip}"))
+        Action.new.new_file_manual_loc!("app/views/static",file_name.strip + ".html.erb")
+        puts("Your File has been created as app/views/static/#{file_name.strip}.html.erb")
+        define_routes("static",file_name)
+      else
+        puts("file_name already register with this route")
+        method(__method__).call(page_name)
+      end
     end
   end
 
