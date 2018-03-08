@@ -80,6 +80,14 @@ class PagesDescription
         page_get.split(',').each do |page_name|
           store_type_choice?(page_name)
         end
+        puts("Want to set root (y/enter)")
+        root_choice = gets
+        if root_choice.strip == "y"
+          puts("here the route display select from it")
+          root_display
+        else
+          puts("Root remain unchanged")
+        end
         puts("you Have selected #{page_count} pages,pages name is #{@@page_get}")
         layout_choice
         exit
@@ -91,6 +99,10 @@ class PagesDescription
       puts("Please Enter the pages correctly")
       method(__method__).call(page_count)
     end
+  end
+# TODO: need to work on root display to show and select the rroot from it
+  def root_display
+    puts `cat config/routes.rb | grep get`
   end
 
   def store_type_choice?(page_name)
