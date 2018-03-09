@@ -32,7 +32,8 @@ class Action < Thor
 
   desc "replacement_in_file!", "replacement_in_file"
   def replacement_in_file!(replacement_location,text_remove,text_add)
-    gsub_file "app/views/layouts/application.html.erb", 'root: "home#index"', '\1'
+    #gsub_file "app/views/layouts/application.html.erb", 'root: "home#index"', '\1'
+    gsub_file replacement_location, text_remove, text_add
   end
   desc "search_in_file!", "Search In File"
   def search_in_file!(location)

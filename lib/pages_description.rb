@@ -100,9 +100,36 @@ class PagesDescription
       method(__method__).call(page_count)
     end
   end
-# TODO: need to work on root display to show and select the rroot from it
+
   def root_display
-    puts `cat config/routes.rb | grep get`
+    puts(`cat config/routes.rb | grep get`)
+    puts ("select your chioce via follow the right display sidefor eg static#home")
+    root_make
+  end
+
+  def root_make
+    puts("Enter Your Choice")
+    root = gets
+    if root.include?("#")
+      root_check = `cat config/routes.rb | grep -F -w #{root.strip}`
+      if !root_check.blank?
+        vintage_root = `cat config/routes.rb | grep -F -w root`
+        if !vintage_root.blank?
+          vintage_root.strip.split("\"").last
+          Action.new.insert_into_file!("after","config/routes.rb",
+            %Q(\n\t get "#{vintage_root.strip.split("\"").last.split("#").first.strip.downcase + '/' + vintage_root.strip.split("\"").last.split("#").last.strip.downcase}" => "#{vintage_root.strip.split("\"").last}"),
+            "Rails.application.routes.draw do")
+        end
+        Action.new.replacement_in_file!("config/routes.rb",vintage_root.strip,%Q(root "#{root.strip}"))
+        Action.new.replacement_in_file!("config/routes.rb",%Q( get "#{root.strip.split('#').first + "/" + root.strip.split('#').last}" => "#{root.strip}"),'\1')
+      else
+        puts("you enter worng route name please make sure. you enter correctly")
+        method("root_display".to_sym).call
+      end
+    else
+      puts("you enter worng route name please make sure. you enter correctly")
+      method("root_display".to_sym).call
+    end
   end
 
   def store_type_choice?(page_name)
