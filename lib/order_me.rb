@@ -15,7 +15,7 @@ module OrderMe
       line = ""
       until line.strip == "q"
         print("?- ")
-          line  = gets
+          line  = gets_setting
           begin
             case(line.strip)
             when '1'
@@ -44,6 +44,9 @@ module OrderMe
           end
       end
 
+    end
+    def gets_setting
+      gets
     end
   end
   # Your code goes here...

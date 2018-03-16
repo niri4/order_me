@@ -1,0 +1,4 @@
+example_id                     | status | run_time        |
+------------------------------ | ------ | --------------- |
+./spec/order_me_spec.rb[1:1]   | passed | 0.00051 seconds |
+./spec/order_me_spec.rb[1:2:1] | failed | 0.00013 seconds |
