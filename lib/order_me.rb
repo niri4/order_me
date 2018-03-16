@@ -1,9 +1,12 @@
 require "order_me/version"
 require "pages_description"
 require "exceptional_call"
+require "shared_method"
 module OrderMe
 
   class Action
+
+
     def self.install
       puts("Hello, Welcome to Order Me Hold Tight For Reveolution.")
       puts("Enter Your Choices")
@@ -15,7 +18,7 @@ module OrderMe
       line = ""
       until line.strip == "q"
         print("?- ")
-          line  = gets_setting
+          line  = SharedMethod.method(:gets_setting).call
           begin
             case(line.strip)
             when '1'
@@ -29,6 +32,7 @@ module OrderMe
               puts("3. three pages")
               puts("4. Define Yourself")
               PagesDescription.new.pages_select
+              exit()
             when '2'
               puts("Your Choice is Selected as Speaking.")
               puts( "soonly coming" )
@@ -44,9 +48,6 @@ module OrderMe
           end
       end
 
-    end
-    def gets_setting
-      gets
     end
   end
   # Your code goes here...
