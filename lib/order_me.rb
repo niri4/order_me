@@ -34,6 +34,7 @@ module OrderMe
               puts( "soonly coming" )
               exit
             else
+              puts("Enter something wrong choice will be an integer")
               input +=line
             end
           rescue SystemExit, Interrupt
