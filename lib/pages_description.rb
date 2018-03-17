@@ -3,6 +3,7 @@ require_relative "api_call"
 require 'json'
 require "constant"
 require "exceptional_call"
+require "shared_method"
 class PagesDescription
   include ApiCall
   def pages_select
@@ -12,20 +13,22 @@ class PagesDescription
     count = 0
     until page_line.strip == "q"
       print("?- ")
-      page_line  = gets
+      page_line  = SharedMethod.method(:gets_setting).call
       begin
         case(page_line.strip)
         when '1'
           if count < 1
           puts("1. one page app selected ")
           page_heading(1)
+          exit
           end
           count= 1
             pages += input_pages
         when '2'
           if count < 1
-            puts("2. 2 page app selected")
+            puts("2. Two page app selected")
             page_heading(2)
+            exit
           end
           count= 1
           pages += input_pages
@@ -33,6 +36,7 @@ class PagesDescription
           if count < 1
             puts("3. Three page app selected ")
             page_heading(3)
+            exit
           end
           count =1
             pages += input_pages
@@ -40,11 +44,12 @@ class PagesDescription
             puts("4. Define Yourself choice selected")
             puts("Aceept only numeric values")
             puts("enter the pages")
-            value = gets()
+            value = SharedMethod.method(:gets_setting).call()
             if value.to_i != 0
               if count < 1
                 puts("4. According to your request pages select #{value.to_i}")
                 page_heading(value.to_i)
+                exit
               else
                 count =0
               end
@@ -59,6 +64,15 @@ class PagesDescription
               puts("4. Define Yourself")
             end
         else
+          puts("Something went wrong")
+          puts("Enter Wrong Choice.. please Enter Only Numeric Value.")
+          puts("Select from start")
+          puts("You Need To Tell Us")
+          puts("How many pages you want in app")
+          puts("1. one page")
+          puts("2. two pages")
+          puts("3. three pages")
+          puts("4. Define Yourself")
           input_pages +=page_line
         end
       rescue SystemExit, Interrupt
@@ -72,7 +86,7 @@ class PagesDescription
   def page_heading(page_count)
     puts("Enter Pages headings")
     puts("plaese make sure write with comma seprated eg home,about us,contact us.")
-    page_get = gets
+    page_get = SharedMethod.method(:gets_setting).call
     a= page_get.split(',')
     if a.length == page_count
       if a.grep(/\A\D/).length == page_count
@@ -81,7 +95,7 @@ class PagesDescription
           store_type_choice?(page_name)
         end
         puts("Want to set root (y/enter)")
-        root_choice = gets
+        root_choice = SharedMethod.method(:gets_setting).call
         if root_choice.strip == "y"
           puts("here the route display select from it")
           root_display
@@ -109,7 +123,7 @@ class PagesDescription
 
   def root_make
     puts("Enter Your Choice")
-    root = gets
+    root = SharedMethod.method(:gets_setting).call
     if root.include?("#")
       root_check = `cat config/routes.rb | grep -F -w #{root.strip}`
       if !root_check.blank?
@@ -136,7 +150,7 @@ class PagesDescription
     puts("Did you want directory or a single file")
     puts("1. want Directory")
     puts("2. want file at single storage")
-    store_type_choice = gets
+    store_type_choice = SharedMethod.method(:gets_setting).call
     case(store_type_choice.strip)
     when '1'
       want_directory?(page_name)
@@ -151,7 +165,7 @@ class PagesDescription
   def want_directory?(page_name)
     puts("Your selected choice is directory")
     puts("want to revert your decision (y/n)")
-    revert_choice = gets
+    revert_choice = SharedMethod.method(:gets_setting).call
     if revert_choice.strip == "y" || revert_choice.strip == "Y"
       begin
         method((caller[0][/`([^']*)'/, 1]).to_sym).call(page_name)
@@ -160,7 +174,7 @@ class PagesDescription
       end
     else
       puts("Enter Directory name")
-      directory_name = gets
+      directory_name = SharedMethod.method(:gets_setting).call
       if directory_name.strip.empty?
         puts("Directory Name cannot be empty.")
         method(__method__).call(page_name)
@@ -169,17 +183,17 @@ class PagesDescription
           puts("Enter file location")
           puts("NOTE: Enter location in between your app by default app/views")
           puts("Example: app/views")
-          file_location = gets
+          file_location = SharedMethod.method(:gets_setting).call
           if file_location.strip.empty?
             puts("location chosen as app/views")
             file_location = "app/views"
           end
           puts("by default file_name is #{page_name.strip} want to change press N or n")
-          page_name_choice = gets
+          page_name_choice = SharedMethod.method(:gets_setting).call
           if page_name_choice.strip == "n" || page_name_choice.strip ==  "N"
             puts("Enter your File Name")
             puts("Example: for html.erb file type only file name home not home.html.erb")
-            file_name = gets
+            file_name = SharedMethod.method(:gets_setting).call
           else
             file_name = page_name.strip
           end
@@ -236,7 +250,7 @@ class PagesDescription
   def want_file_store?(page_name)
     puts("Your Selected Choice is file at single storage")
     puts("want to revert your decision (y/n)")
-    revert_choice = gets
+    revert_choice = SharedMethod.method(:gets_setting).call
     if revert_choice.strip == "y" || revert_choice.strip == "Y"
       begin
         method((caller[0][/`([^']*)'/, 1]).to_sym).call(page_name)
@@ -245,11 +259,11 @@ class PagesDescription
       end
     else
       puts("by default file_name is #{page_name.strip} want to change press N or n")
-      page_name_choice = gets
+      page_name_choice = SharedMethod.method(:gets_setting).call
       if page_name_choice.strip == "n" || page_name_choice.strip ==  "N"
         puts("Enter File name")
         puts("Example: for html.erb file type only file name home not home.html.erb")
-        file_name = gets
+        file_name = SharedMethod.method(:gets_setting).call
         if !check_formet(file_name.strip)  && !File.read("config/routes.rb").include?(%Q(get "#{"static" + '/' + file_name.strip}" => "static##{file_name.strip}"))
         else
           puts("file_name should not contain numeric at start or already register route with this action")
@@ -281,7 +295,7 @@ class PagesDescription
     count =0
     until line_layout.strip == "q"
       print("?- ")
-      line_layout  = gets
+      line_layout  = SharedMethod.method(:gets_setting).call
       case(line_layout.strip)
       when '1'
         if count == 0
@@ -397,7 +411,7 @@ class PagesDescription
     puts("2.header second #{"#{WEB_URL}templates/#{a["template"][1]["id"]}"}")
     puts("3 header third #{"#{WEB_URL}templates/#{a["template"][2]["id"]}"}")
     puts("4. View More #{"#{WEB_URL}templates/"}")
-    choice = gets
+    choice = SharedMethod.method(:gets_setting).call
     if choice.to_i > 4
       header_list
     else
@@ -409,11 +423,11 @@ class PagesDescription
 
   def header_view_more
     puts("Enter Your key to apply that Header")
-    key = gets
+    key = SharedMethod.method(:gets_setting).call
   end
   def footer_view_more
     puts("Enter Your key to apply that Footer")
-    key = gets
+    key = SharedMethod.method(:gets_setting).call
   end
 
   def footer_list
@@ -424,7 +438,7 @@ class PagesDescription
     puts("2.Footer second #{"#{WEB_URL}templates/#{a["template"][1]["id"]}"}")
     puts("3 Footer third #{"#{WEB_URL}templates/#{a["template"][2]["id"]}"}")
     puts("4. View More #{"#{WEB_URL}templates/"}")
-    choice = gets
+    choice = SharedMethod.method(:gets_setting).call
     if choice.to_i > 4
       footer_list
     else

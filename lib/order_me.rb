@@ -3,7 +3,6 @@ require "pages_description"
 require "exceptional_call"
 require "shared_method"
 module OrderMe
-
   class Action
     def self.install
       puts("Hello, Welcome to Order Me Hold Tight For Reveolution.")

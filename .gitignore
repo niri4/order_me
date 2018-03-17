@@ -12,6 +12,7 @@
 /tmp/*
 !/log/.keep
 !/tmp/.keep
+/.rspec_status
 
 /node_modules
 /yarn-error.log
