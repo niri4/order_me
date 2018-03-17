@@ -1,4 +1,7 @@
 # OrderMe
+By Nirankar Singh
+
+[![Build Status](https://travis-ci.org/niri4/order_me.svg?branch=master)](https://travis-ci.org/niri4/order_me)
 
 Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/order_me`. To experiment with that code, run `bin/console` for an interactive prompt.
 
