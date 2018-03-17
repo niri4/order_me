@@ -1,9 +1,6 @@
 RSpec.describe OrderMe do
 
   describe "ask about your choice about selection" do
-    let(:abc){
-      OrderMe::Action.install
-    }
     before do
       module SharedMethod
         def self.gets_setting
@@ -12,7 +9,10 @@ RSpec.describe OrderMe do
       end
     end
     it "Selected as Speaking" do
-      expect(abc).to eq("Your Choice is Selected as Speaking.")
+      begin
+       expect(  OrderMe::Action.install).to eq("Your Choice is Selected as Speaking.")
+     rescue SystemExit => e
+     end
     end
   end
 end
