@@ -3,12 +3,13 @@ RSpec.describe OrderMe do
     expect(OrderMe::VERSION).not_to be nil
   end
 
-  context "ask about your choice about selection" do
+  describe "ask about your choice about selection" do
+
     before do
       module SharedMethod
-          def self.gets_setting
-            '1'
-          end
+        def self.gets_setting
+          '1'
+        end
       end
 
       class PagesDescription
@@ -16,8 +17,12 @@ RSpec.describe OrderMe do
         end
       end
     end
-    it "Selected as manually" do
-      expect(OrderMe::Action.install).to eq("Your Choice is selected as Manually.")
+
+    it "Selected as Manually" do
+      begin
+       expect(OrderMe::Action.install).to eq("Your Choice is selected as Manually.")
+     rescue SystemExit => e
+     end
     end
   end
 end

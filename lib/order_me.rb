@@ -5,14 +5,12 @@ require "shared_method"
 module OrderMe
 
   class Action
-
-
     def self.install
       puts("Hello, Welcome to Order Me Hold Tight For Reveolution.")
       puts("Enter Your Choices")
       puts("1. Manually")
       puts("2. Speaking")
-      puts("Enter Q  or ctrl +c to Quit")
+      puts("Enter Q  or ctrl + c to Quit")
       program = ""
       input = ""
       line = ""
@@ -32,7 +30,7 @@ module OrderMe
               puts("3. three pages")
               puts("4. Define Yourself")
               PagesDescription.new.pages_select
-              exit()
+              exit
             when '2'
               puts("Your Choice is Selected as Speaking.")
               puts( "soonly coming" )
