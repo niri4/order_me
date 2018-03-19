@@ -20,7 +20,7 @@ class PagesDescription
           if count < 1
           puts("1. one page app selected ")
           page_heading(1)
-          exit
+          break
           end
           count= 1
             pages += input_pages
@@ -28,7 +28,7 @@ class PagesDescription
           if count < 1
             puts("2. Two page app selected")
             page_heading(2)
-            exit
+            break
           end
           count= 1
           pages += input_pages
@@ -36,7 +36,7 @@ class PagesDescription
           if count < 1
             puts("3. Three page app selected ")
             page_heading(3)
-            exit
+            break
           end
           count =1
             pages += input_pages
@@ -49,7 +49,7 @@ class PagesDescription
               if count < 1
                 puts("4. According to your request pages select #{value.to_i}")
                 page_heading(value.to_i)
-                exit
+                break
               else
                 count =0
               end

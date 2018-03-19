@@ -29,11 +29,13 @@ module OrderMe
               puts("3. three pages")
               puts("4. Define Yourself")
               PagesDescription.new.pages_select
-              exit
+              break
             when '2'
               puts("Your Choice is Selected as Speaking.")
               puts( "soonly coming" )
-              exit
+              break
+            when 'q'
+              puts("GraceFully Shutting Down")
             else
               puts("Enter something wrong choice will be an integer")
               input +=line
