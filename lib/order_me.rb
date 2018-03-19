@@ -28,7 +28,7 @@ module OrderMe
               puts("2. two pages")
               puts("3. three pages")
               puts("4. Define Yourself")
-              PagesDescription.new.pages_select
+              PagesDescription.pages_select
               break
             when '2'
               puts("Your Choice is Selected as Speaking.")

@@ -6,7 +6,7 @@ require "exceptional_call"
 require "shared_method"
 class PagesDescription
   include ApiCall
-  def pages_select
+  def self.pages_select
     pages = ""
     input_pages = ""
     page_line = ""
@@ -20,10 +20,11 @@ class PagesDescription
           if count < 1
           puts("1. one page app selected ")
           page_heading(1)
-          break
+
           end
           count= 1
             pages += input_pages
+            break
         when '2'
           if count < 1
             puts("2. Two page app selected")
@@ -115,7 +116,7 @@ class PagesDescription
     end
   end
 
-  def root_display
+  def self.root_display
     puts(`cat config/routes.rb | grep get`)
     puts ("select your chioce via follow the right display sidefor eg static#home")
     root_make

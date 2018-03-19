@@ -15,7 +15,7 @@ RSpec.describe OrderMe do
       end
 
       class PagesDescription
-        def pages_select
+        def self.pages_select
         end
       end
     end
