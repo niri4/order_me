@@ -1,24 +1,22 @@
-Dir["./spec/support/shared_examples/*.rb"].each {|file| require file }
-
-
 RSpec.describe OrderMe do
   it "has a version number" do
     expect(OrderMe::VERSION).not_to be nil
   end
 
   describe "Choice about the above Manually or Speaking  and for quit Selection" do
+
     before do
       module SharedMethod
-          def self.gets_setting
-            $val
-          end
-      end
+        def self.gets_setting
+          $val
+        end
 
-      class PagesDescription
-        def self.pages_select
+        def self.test_env?
+           true
         end
       end
     end
+
     describe "your choice about selection" do
       before do
         $val = 'q'
@@ -54,7 +52,6 @@ RSpec.describe OrderMe do
        end
       end
     end
-
 
   end
 end

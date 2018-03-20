@@ -6,7 +6,7 @@ require "exceptional_call"
 require "shared_method"
 class PagesDescription
   include ApiCall
-  def self.pages_select
+  def pages_select
     pages = ""
     input_pages = ""
     page_line = ""
@@ -19,8 +19,7 @@ class PagesDescription
         when '1'
           if count < 1
           puts("1. one page app selected ")
-          page_heading(1)
-
+          page_heading(1) if !SharedMethod.method(:test_env?).call
           end
           count= 1
             pages += input_pages
@@ -28,19 +27,19 @@ class PagesDescription
         when '2'
           if count < 1
             puts("2. Two page app selected")
-            page_heading(2)
-            break
+            page_heading(2) if !SharedMethod.method(:test_env?).call
           end
           count= 1
           pages += input_pages
+          break
         when '3'
           if count < 1
             puts("3. Three page app selected ")
-            page_heading(3)
-            break
+            page_heading(3) if !SharedMethod.method(:test_env?).call
           end
           count =1
             pages += input_pages
+            break
           when '4'
             puts("4. Define Yourself choice selected")
             puts("Aceept only numeric values")
@@ -49,7 +48,7 @@ class PagesDescription
             if value.to_i != 0
               if count < 1
                 puts("4. According to your request pages select #{value.to_i}")
-                page_heading(value.to_i)
+                page_heading(value.to_i) if !SharedMethod.method(:test_env?).call
                 break
               else
                 count =0
