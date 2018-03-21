@@ -247,4 +247,62 @@ RSpec.describe PagesDescription do
 
   end
 
+  describe "Selection about Layout Choice" do
+    before do
+      module SharedMethod
+        def self.gets_setting
+           $val
+        end
+        def self.test_env?
+           true
+        end
+      end
+    end
+    describe "selected as Common Header and Footer" do
+      before do
+        $val = '1'
+      end
+      it "should have selected common header and footer if choice 1" do
+        expect{PagesDescription.new.layout_choice}.to output(%Q(Enter Your choice about layout\n1. Want Common Header And Footer\n2. Header Only\n3. Footer Only\n4. Make Seprate Header and Footer for every Pages\n?- You have selected common Header and Footer\n)).to_stdout
+      end
+    end
+
+    describe "selected as Header only if choice 2" do
+      before do
+        $val = '2'
+      end
+      it "should have selected only Header" do
+        expect{PagesDescription.new.layout_choice}.to output(%Q(Enter Your choice about layout\n1. Want Common Header And Footer\n2. Header Only\n3. Footer Only\n4. Make Seprate Header and Footer for every Pages\n?- You have selected common Header only\n)).to_stdout
+      end
+    end
+
+    describe "selected as Footer only if choice 3" do
+      before do
+        $val = '3'
+      end
+      it "should have selected only Footer" do
+        expect{PagesDescription.new.layout_choice}.to output(%Q(Enter Your choice about layout\n1. Want Common Header And Footer\n2. Header Only\n3. Footer Only\n4. Make Seprate Header and Footer for every Pages\n?- You have selected common Footer only\n)).to_stdout
+      end
+    end
+
+    describe "selected as Seprate Header and Footer for every Pages if choice 4" do
+      before do
+        $val = '4'
+      end
+      it "should Make Seprate Header and Footer for every Pages" do
+        expect{PagesDescription.new.layout_choice}.to output(%Q(Enter Your choice about layout\n1. Want Common Header And Footer\n2. Header Only\n3. Footer Only\n4. Make Seprate Header and Footer for every Pages\n?- Additional function come in future\n)).to_stdout
+      end
+    end
+
+    describe "selected as invalid choice" do
+      before do
+        $val = '5'
+      end
+      it "should not select as invalid choice" do
+        expect{PagesDescription.new.layout_choice}.to output(%Q(Enter Your choice about layout\n1. Want Common Header And Footer\n2. Header Only\n3. Footer Only\n4. Make Seprate Header and Footer for every Pages\n?- Please enter your choice in these option only.\n)).to_stdout
+      end
+    end
+
+  end
+
 end

@@ -117,7 +117,7 @@ class PagesDescription
 
   def self.root_display
     puts(`cat config/routes.rb | grep get`)
-    puts ("select your chioce via follow the right display sidefor eg static#home")
+    puts ("select your chioce via follow the right display side for eg static#home")
     root_make
   end
 
@@ -305,34 +305,36 @@ class PagesDescription
       case(line_layout.strip)
       when '1'
         if count == 0
-          common_header_footer
+          puts("You have selected common Header and Footer")
+          common_header_footer if !SharedMethod.method(:test_env?).call
           count+= 1
-          exit
+          break
         else
-          exit
         end
       when '2'
         if count == 0
-          header_only
+          puts("You have selected common Header only")
+          header_only  if !SharedMethod.method(:test_env?).call
           count+= 1
-          exit
+          break
         else
-          exit
         end
       when '3'
         if count == 0
-          footer_only
+          puts("You have selected common Footer only")
+          footer_only  if !SharedMethod.method(:test_env?).call
           count+= 1
-          exit
+          break
         else
-          exit
         end
       when '4'
         puts("Additional function come in future")
-        method(__method__).call(page_count)
+        method(__method__).call  if !SharedMethod.method(:test_env?).call
+        break
       else
         puts("Please enter your choice in these option only.")
-        method(__method__).call(page_count)
+        method(__method__).call if !SharedMethod.method(:test_env?).call
+        break
       end
     end
   end
