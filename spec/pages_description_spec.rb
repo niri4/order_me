@@ -137,4 +137,114 @@ RSpec.describe PagesDescription do
 
   end
 
+  describe "Choice about selection of file storage" do
+    before do
+      module SharedMethod
+        def self.gets_setting
+           $val
+        end
+        def self.test_env?
+           true
+        end
+      end
+    end
+
+    describe "selection about storage_type as a Directory" do
+      before do
+        $val = '1'
+      end
+      it "should not conatain numeric in it" do
+        begin
+          expect{PagesDescription.new.want_directory?('home')}.to output(%Q(Your selected choice is directory\nwant to revert your decision (y/n)\nEnter Directory name\ndirectory_name should not contain numeric at start\n)).to_stdout
+       rescue SystemExit => e
+       end
+      end
+    end
+
+    describe "selection about storage_type as a Directory" do
+      before do
+        $val = ''
+      end
+      it "should be invalid if selected as nil" do
+        begin
+          expect{PagesDescription.new.want_directory?('home')}.to output(%Q(Your selected choice is directory\nwant to revert your decision (y/n)\nEnter Directory name\nDirectory Name cannot be empty.\n)).to_stdout
+       rescue SystemExit => e
+       end
+      end
+    end
+
+    describe "selection about storage_type as a Directory" do
+      before do
+        $val = 'home'
+      end
+      it "should be pass and create file" do
+        begin
+          expect{PagesDescription.new.want_directory?('home')}.to output(%Q(Your selected choice is directory\nwant to revert your decision (y/n)\nEnter Directory name\nEnter file location\nNOTE: Enter location in between your app by default app/views\nExample: app/views\nby default file_name is home want to change press N or n\nYour File has been created as home/home/home.html.erb\n)).to_stdout
+       rescue SystemExit => e
+       end
+      end
+    end
+
+    describe "selection about storage_type as a Directory" do
+      before do
+        $val = 'y'
+      end
+      it "should be revert back to select choice about storage type" do
+        begin
+          expect{PagesDescription.new.want_directory?('home')}.to output(%Q(Your selected choice is directory\nwant to revert your decision (y/n)\nYour choice select as Directory would be revert back select again your choice.\n)).to_stdout
+       rescue SystemExit => e
+       end
+      end
+    end
+
+    describe "selection about storage_type as a Directory" do
+      before do
+        $val = 'n'
+      end
+      it "should be overirde file name as via press the n button" do
+        begin
+          expect{PagesDescription.new.want_directory?('home')}.to output(%Q(Your selected choice is directory\nwant to revert your decision (y/n)\nEnter Directory name\nEnter file location\nNOTE: Enter location in between your app by default app/views\nExample: app/views\nby default file_name is home want to change press N or n\nEnter your File Name\nExample: for html.erb file type only file name home not home.html.erb\nYour File has been created as n/n/n.html.erb\n)).to_stdout
+       rescue SystemExit => e
+       end
+      end
+    end
+
+    describe "selection about storage_type as a single storage" do
+      before do
+        $val = 'y'
+      end
+      it "should be revert back to select choice about storage type" do
+        begin
+          expect{PagesDescription.new.want_file_store?('home')}.to output(%Q(Your Selected Choice is file at single storage\nwant to revert your decision (y/n)\nYour choice select as single storage would be revert back select again your choice.\n)).to_stdout
+       rescue SystemExit => e
+       end
+      end
+    end
+
+    describe "selection about storage_type as a single storage" do
+      before do
+        $val = 'n'
+      end
+      it "should be overirde file name as via press the n button" do
+        begin
+          expect{PagesDescription.new.want_file_store?('home')}.to output(%Q(Your Selected Choice is file at single storage\nwant to revert your decision (y/n)\nby default file_name is home want to change press N or n\nEnter File Name\nExample: for html.erb file type only file name home not home.html.erb\nYour File has been created as app/views/static/n.html.erb\n)).to_stdout
+       rescue SystemExit => e
+       end
+      end
+    end
+
+    describe "selection about storage_type as a single storage" do
+      before do
+        $val = 'home'
+      end
+      it "should be pass and create file" do
+        begin
+          expect{PagesDescription.new.want_file_store?('home')}.to output(%Q(Your Selected Choice is file at single storage\nwant to revert your decision (y/n)\nby default file_name is home want to change press N or n\nYour File has been created as app/views/static/home.html.erb\n)).to_stdout
+       rescue SystemExit => e
+       end
+      end
+    end
+
+  end
+
 end

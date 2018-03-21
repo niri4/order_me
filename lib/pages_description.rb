@@ -168,16 +168,18 @@ class PagesDescription
     revert_choice = SharedMethod.method(:gets_setting).call
     if revert_choice.strip == "y" || revert_choice.strip == "Y"
       begin
-        method((caller[0][/`([^']*)'/, 1]).to_sym).call(page_name)
+        puts("Your choice select as Directory would be revert back select again your choice.")
+        method((caller[0][/`([^']*)'/, 1]).to_sym).call(page_name) if !SharedMethod.method(:test_env?).call
       rescue
-        store_type_choice?(page_name)
+        puts("Your choice select as Directory would be revert back select again your choice.")
+        store_type_choice?(page_name) if !SharedMethod.method(:test_env?).call
       end
     else
       puts("Enter Directory name")
       directory_name = SharedMethod.method(:gets_setting).call
       if directory_name.strip.empty?
         puts("Directory Name cannot be empty.")
-        method(__method__).call(page_name)
+        method(__method__).call(page_name) if !SharedMethod.method(:test_env?).call
       else
         if !check_formet(directory_name.strip)
           puts("Enter file location")
@@ -197,17 +199,18 @@ class PagesDescription
           else
             file_name = page_name.strip
           end
-          if !check_formet(file_name.strip) && !File.read("config/routes.rb").include?(%Q(get "#{directory_name.strip.downcase + '/' + file_name.strip}" => "#{directory_name.strip.downcase}##{file_name.strip}"))
-            Action.new.new_file_manual_loc!(file_location.strip + "/" + directory_name.strip.downcase,file_name.strip + ".html.erb")
+          result= !(SharedMethod.method(:test_env?).call )? (!File.read("config/routes.rb").include?(%Q(get "#{directory_name.strip.downcase + '/' + file_name.strip}" => "#{directory_name.strip.downcase}##{file_name.strip}") )) : true
+          if !check_formet(file_name.strip) && (result)
+            Action.new.new_file_manual_loc!(file_location.strip + "/" + directory_name.strip.downcase,file_name.strip + ".html.erb") if !SharedMethod.method(:test_env?).call
             puts("Your File has been created as #{file_location.strip}/#{directory_name.strip}/#{file_name.strip}.html.erb")
-            define_routes(directory_name,file_name)
+            define_routes(directory_name,file_name) if !SharedMethod.method(:test_env?).call
           else
             puts("file_name should not contain numeric at start or already register route with this action")
-            method(__method__).call(page_name)
+            method(__method__).call(page_name) if !SharedMethod.method(:test_env?).call
           end
         else
           puts("directory_name should not contain numeric at start")
-          method(__method__).call(page_name)
+          method(__method__).call(page_name) if !SharedMethod.method(:test_env?).call
         end
       end
     end
@@ -253,32 +256,35 @@ class PagesDescription
     revert_choice = SharedMethod.method(:gets_setting).call
     if revert_choice.strip == "y" || revert_choice.strip == "Y"
       begin
-        method((caller[0][/`([^']*)'/, 1]).to_sym).call(page_name)
+        puts("Your choice select as single storage would be revert back select again your choice.")
+        method((caller[0][/`([^']*)'/, 1]).to_sym).call(page_name) if !SharedMethod.method(:test_env?).call
       rescue
-        store_type_choice?(page_name)
+        puts("Your choice select as single storage would be revert back select again your choice.")
+        store_type_choice?(page_name) if !SharedMethod.method(:test_env?).call
       end
     else
       puts("by default file_name is #{page_name.strip} want to change press N or n")
       page_name_choice = SharedMethod.method(:gets_setting).call
       if page_name_choice.strip == "n" || page_name_choice.strip ==  "N"
-        puts("Enter File name")
+        puts("Enter File Name")
         puts("Example: for html.erb file type only file name home not home.html.erb")
         file_name = SharedMethod.method(:gets_setting).call
-        if !check_formet(file_name.strip)  && !File.read("config/routes.rb").include?(%Q(get "#{"static" + '/' + file_name.strip}" => "static##{file_name.strip}"))
+        result= !(SharedMethod.method(:test_env?).call )? (!File.read("config/routes.rb").include?(%Q(get "#{"static" + '/' + file_name.strip}" => "static##{file_name.strip}"))) : true
+        if !check_formet(file_name.strip)  && result
         else
           puts("file_name should not contain numeric at start or already register route with this action")
-          method(__method__).call(page_name)
+          method(__method__).call(page_name) if !SharedMethod.method(:test_env?).call
         end
       else
         file_name = page_name.strip
       end
-      if !File.read("config/routes.rb").include?(%Q(get "#{"static" + '/' + file_name.strip}" => "static##{file_name.strip}"))
-        Action.new.new_file_manual_loc!("app/views/static",file_name.strip + ".html.erb")
+      if !(SharedMethod.method(:test_env?).call )? (!File.read("config/routes.rb").include?(%Q(get "#{"static" + '/' + file_name.strip}" => "static##{file_name.strip}"))) : true
+        Action.new.new_file_manual_loc!("app/views/static",file_name.strip + ".html.erb") if !SharedMethod.method(:test_env?).call
         puts("Your File has been created as app/views/static/#{file_name.strip}.html.erb")
-        define_routes("static",file_name)
+        define_routes("static",file_name) if !SharedMethod.method(:test_env?).call
       else
         puts("file_name already register with this route")
-        method(__method__).call(page_name)
+        method(__method__).call(page_name) if !SharedMethod.method(:test_env?).call
       end
     end
   end
