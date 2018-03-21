@@ -422,6 +422,9 @@ class PagesDescription
     choice = SharedMethod.method(:gets_setting).call
     if choice.to_i > 4
       header_list
+    elsif choice.to_i == 0
+      puts("please select choice define above only.")
+      header_list
     else
       hader = {}
       hader = a["template"][(choice.to_i - 1)]["key"]
@@ -448,6 +451,9 @@ class PagesDescription
     puts("4. View More #{"#{WEB_URL}templates/"}")
     choice = SharedMethod.method(:gets_setting).call
     if choice.to_i > 4
+      footer_list
+    elsif choice.to_i == 0
+      puts("please select choice define above only.")
       footer_list
     else
       foter = {}
