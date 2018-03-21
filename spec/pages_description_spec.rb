@@ -13,7 +13,7 @@ RSpec.describe PagesDescription do
         end
       end
     end
-    
+
     describe "page choice as single page App" do
       before do
         $val = '1'
@@ -74,4 +74,67 @@ RSpec.describe PagesDescription do
       end
     end
   end
+
+  describe "tell us page heading of all pages selected" do
+    before do
+      module SharedMethod
+        def self.gets_setting
+           $val
+        end
+        def self.test_env?
+           true
+        end
+      end
+    end
+
+    describe "must be comma seprated" do
+      before do
+        $val = 'home'
+      end
+      it "must be a comma seprated" do
+        begin
+          expect{PagesDescription.new.page_heading(1)}.to output(%Q(Enter Pages headings\nplaese make sure write with comma seprated eg home,about us,contact us.\nWant to set root (y/enter)\nRoot remain unchanged\nyou Have selected 1 pages,pages name is home\n)).to_stdout
+       rescue SystemExit => e
+       end
+      end
+
+    end
+    describe "must be invalid if not comma seprated" do
+      before do
+        $val = 'csdfvs sdfsgs'
+      end
+      it "must be a invalid if not comma seprated" do
+        begin
+          expect{PagesDescription.new.page_heading(2)}.to output(%Q(Enter Pages headings\nplaese make sure write with comma seprated eg home,about us,contact us.\nPlease Enter the pages correctly\n)).to_stdout
+       rescue SystemExit => e
+       end
+      end
+    end
+
+    describe "must not have any numeric character at start" do
+      before do
+        $val = '1fsef'
+      end
+      it "must be a invalid if have any numeric character at start" do
+        begin
+          expect{PagesDescription.new.page_heading(1)}.to output(%Q(Enter Pages headings\nplaese make sure write with comma seprated eg home,about us,contact us.\npage heading should not contain numeric at start\n)).to_stdout
+       rescue SystemExit => e
+       end
+      end
+    end
+
+    describe "must have same number of heading as page selected" do
+      before do
+        $val = 'fsef'
+      end
+      it "must have same number of heading as page selected" do
+        begin
+          expect{PagesDescription.new.page_heading(2)}.to output(%Q(Enter Pages headings\nplaese make sure write with comma seprated eg home,about us,contact us.\nPlease Enter the pages correctly\n)).to_stdout
+       rescue SystemExit => e
+       end
+      end
+    end
+
+  end
+
 end

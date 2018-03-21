@@ -92,7 +92,7 @@ class PagesDescription
       if a.grep(/\A\D/).length == page_count
         @@page_get = page_get
         page_get.split(',').each do |page_name|
-          store_type_choice?(page_name)
+          store_type_choice?(page_name) if !SharedMethod.method(:test_env?).call
         end
         puts("Want to set root (y/enter)")
         root_choice = SharedMethod.method(:gets_setting).call
@@ -103,15 +103,15 @@ class PagesDescription
           puts("Root remain unchanged")
         end
         puts("you Have selected #{page_count} pages,pages name is #{@@page_get}")
-        layout_choice
-        exit
+        layout_choice if !SharedMethod.method(:test_env?).call
+
       else
         puts("page heading should not contain numeric at start")
-        method(__method__).call(page_count)
+        method(__method__).call(page_count) if !SharedMethod.method(:test_env?).call
       end
     else
       puts("Please Enter the pages correctly")
-      method(__method__).call(page_count)
+      method(__method__).call(page_count) if !SharedMethod.method(:test_env?).call
     end
   end
 
