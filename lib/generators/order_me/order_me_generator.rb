@@ -5,7 +5,7 @@ class OrderMeGenerator < Rails::Generators::NamedBase
        copy_file "order_me.rb", "vendor/order_me.rb"
    #remove_file "app/assets/stylesheets/application.css"
    copy_file "application.css.scss", "app/assets/stylesheets/order_me_application.css.scss"
-    insert_into_file "app/assets/javascripts/application.js", "//= require jquery \n //= require bootstrap-sprockets\n //= require jquery_ujs",
+    insert_into_file "app/assets/javascripts/application.js", "//= require jquery \n //= require bootstrap\n //= require jquery_ujs\n",
                     :before => "//= require rails-ujs"
     append_to_file 'config/initializers/assets.rb' do
       'Rails.application.config.assets.precompile += %w( order_me_application.css.scss )'
@@ -15,7 +15,7 @@ class OrderMeGenerator < Rails::Generators::NamedBase
 
   private
   def install_dependency
-     gem 'bootstrap-sass', '~> 3.3.7'
+     gem 'bootstrap', '~> 4.0.0'
      gem 'jquery-rails'
      gem "font-awesome-rails"
      Bundler.with_clean_env do
