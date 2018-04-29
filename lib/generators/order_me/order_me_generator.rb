@@ -3,6 +3,7 @@ class OrderMeGenerator < Rails::Generators::NamedBase
   def install
     install_dependency
        copy_file "order_me.rb", "vendor/order_me.rb"
+       copy_file "order_me.yml", "config/order_me.yml"
    #remove_file "app/assets/stylesheets/application.css"
    copy_file "application.css.scss", "app/assets/stylesheets/order_me_application.css.scss"
     insert_into_file "app/assets/javascripts/application.js", "//= require jquery \n //= require bootstrap\n //= require jquery_ujs\n",

@@ -88,7 +88,7 @@ class PagesDescription
     puts("plaese make sure write with comma seprated eg home,about us,contact us.")
     page_get = SharedMethod.method(:gets_setting).call
     a= page_get.split(',')
-    if a.length == page_count
+    if a.length == page_count && a.first != nil
       if a.grep(/\A\D/).length == page_count
         @@page_get = page_get
         page_get.split(',').each do |page_name|
@@ -413,22 +413,24 @@ class PagesDescription
   end
   def header_list
     a= ApiCall.header_list
-    puts("Enter Your Choice about Header")
-    puts("click on link to preview the header")
-    puts("1.header first #{"#{WEB_URL}templates/#{a["template"].first["id"]}"}")
-    puts("2.header second #{"#{WEB_URL}templates/#{a["template"][1]["id"]}"}")
-    puts("3 header third #{"#{WEB_URL}templates/#{a["template"][2]["id"]}"}")
-    puts("4. View More #{"#{WEB_URL}templates/"}")
-    choice = SharedMethod.method(:gets_setting).call
-    if choice.to_i > 4
-      header_list
-    elsif choice.to_i == 0
-      puts("please select choice define above only.")
-      header_list
-    else
-      hader = {}
-      hader = a["template"][(choice.to_i - 1)]["key"]
-      return choice,hader
+    if a.last =="true"
+      puts("Enter Your Choice about Header")
+      puts("click on link to preview the header")
+      puts("1.header first #{"#{WEB_URL}templates/#{a["template"].first["id"]}"}")
+      puts("2.header second #{"#{WEB_URL}templates/#{a["template"][1]["id"]}"}")
+      puts("3 header third #{"#{WEB_URL}templates/#{a["template"][2]["id"]}"}")
+      puts("4. View More #{"#{WEB_URL}templates/"}")
+      choice = SharedMethod.method(:gets_setting).call
+      if choice.to_i > 4
+        header_list
+      elsif choice.to_i == 0
+        puts("please select choice define above only.")
+        header_list
+      else
+        hader = {}
+        hader = a["template"][(choice.to_i - 1)]["key"]
+        return choice,hader
+      end
     end
   end
 
