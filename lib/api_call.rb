@@ -31,9 +31,10 @@ module ApiCall
      a = Net::HTTP.get(uri)
       b= JSON.parse(a)
       if  b["status"] == "true"
-        return b
+        return b,"true"
       else
         puts(b["message"])
+        return b,"false"
       end
     end
 
@@ -41,14 +42,15 @@ module ApiCall
       auth = authencation
       uri = URI("#{API_URL}template_search")
       res = Net::HTTP.post_form(uri, 'key' => key,
-                              'app_token' => auth.app_token,
-                              'email'=> auth.email,
-                              'password' => auth.password)
+                              'app_token' => auth.first,
+                              'email'=> auth.second,
+                              'password' => auth.third)
       b= JSON.parse(res.body)
       if  b["status"] == "true"
-        return  b
+        return b,"true"
       else
         puts(b["message"])
+        return b,"false"
       end
     end
 

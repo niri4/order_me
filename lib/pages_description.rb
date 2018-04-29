@@ -396,13 +396,16 @@ class PagesDescription
 
   def api_fetch(key)
     template = ApiCall.template_search(key)
-    html_file = "#{WEB_URL}#{template["template"]["file"]["url"]}"
-    css_file = "#{WEB_URL}#{template["template"]["css_file"]["url"]}"
-    if template["template"]["js_file"] == nil
-      js_file = "#{WEB_URL}#{template["template"]["js_file"]["url"]}"
-      return html_file,css_file,js_file
+    if template.last == "true"
+      html_file = "#{WEB_URL}/template/#{template.first["template"]["file"]}"
+      css_file = "#{WEB_URL}/template/#{template.first["template"]["css_file"]}"
+      if template.first["template"]["js_file"] != nil
+        js_file = "#{WEB_URL}/template/#{template.first["template"]["js_file"]}"
+        return html_file,css_file,js_file
+      else
+        return html_file,css_file
+      end
     else
-      return html_file,css_file
     end
   end
   def header_only
@@ -416,9 +419,9 @@ class PagesDescription
     if a.last =="true"
       puts("Enter Your Choice about Header")
       puts("click on link to preview the header")
-      puts("1.header first #{"#{WEB_URL}templates/#{a["template"].first["id"]}"}")
-      puts("2.header second #{"#{WEB_URL}templates/#{a["template"][1]["id"]}"}")
-      puts("3 header third #{"#{WEB_URL}templates/#{a["template"][2]["id"]}"}")
+      puts("1.header first #{"#{WEB_URL}templates/#{a.first["template"].first["id"]}"}")
+      puts("2.header second #{"#{WEB_URL}templates/#{a.first["template"][1]["id"]}"}")
+      puts("3 header third #{"#{WEB_URL}templates/#{a.first["template"][2]["id"]}"}")
       puts("4. View More #{"#{WEB_URL}templates/"}")
       choice = SharedMethod.method(:gets_setting).call
       if choice.to_i > 4
@@ -428,7 +431,7 @@ class PagesDescription
         header_list
       else
         hader = {}
-        hader = a["template"][(choice.to_i - 1)]["key"]
+        hader = a.first["template"][(choice.to_i - 1)]["key"]
         return choice,hader
       end
     end
@@ -445,22 +448,25 @@ class PagesDescription
 
   def footer_list
     a= ApiCall.footer_list
-    puts("Enter Your Choice about Footer")
-    puts("click on link to preview the Footer")
-    puts("1.Footer first #{"#{WEB_URL}templates/#{a["template"].first["id"]}"}")
-    puts("2.Footer second #{"#{WEB_URL}templates/#{a["template"][1]["id"]}"}")
-    puts("3 Footer third #{"#{WEB_URL}templates/#{a["template"][2]["id"]}"}")
-    puts("4. View More #{"#{WEB_URL}templates/"}")
-    choice = SharedMethod.method(:gets_setting).call
-    if choice.to_i > 4
-      footer_list
-    elsif choice.to_i == 0
-      puts("please select choice define above only.")
-      footer_list
+    if a.last == "true"
+      puts("Enter Your Choice about Footer")
+      puts("click on link to preview the Footer")
+      puts("1.Footer first #{"#{WEB_URL}templates/#{a.first["template"].first["id"]}"}")
+      puts("2.Footer second #{"#{WEB_URL}templates/#{a.first["template"][1]["id"]}"}")
+      puts("3 Footer third #{"#{WEB_URL}templates/#{a.first["template"][2]["id"]}"}")
+      puts("4. View More #{"#{WEB_URL}templates/"}")
+      choice = SharedMethod.method(:gets_setting).call
+      if choice.to_i > 4
+        footer_list
+      elsif choice.to_i == 0
+        puts("please select choice define above only.")
+        footer_list
+      else
+        foter = {}
+        foter = a.first["template"][(choice.to_i - 1)]["key"]
+        return choice,foter
+      end
     else
-      foter = {}
-      foter = a["template"][(choice.to_i - 1)]["key"]
-      return choice,foter
     end
   end
 end
